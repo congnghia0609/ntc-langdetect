@@ -16,11 +16,81 @@
 
 package com.ntc.langdetect;
 
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+import java.io.IOException;
+import java.io.InputStream;
+import opennlp.tools.langdetect.Language;
+import opennlp.tools.langdetect.LanguageDetectorME;
+import opennlp.tools.langdetect.LanguageDetectorModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  *
  * @author nghiatc
  * @since Jan 15, 2021
  */
 public class LangDetect {
+    private static final Logger log = LoggerFactory.getLogger(LangDetect.class);
+    private String pathModelLD = "models/ld/langdetect-183.bin";
+    private LanguageDetectorME ldME;
+
+    public LangDetect() throws IOException {
+        // Load model
+        InputStream isModel = getResourceAsStream(pathModelLD);
+        LanguageDetectorModel ldModel = new LanguageDetectorModel(isModel);
+        ldME = new LanguageDetectorME(ldModel);
+    }
+
+    public LangDetect(String pathModel) throws IOException {
+        if (pathModel == null || pathModel.isEmpty()) {
+            throw new ExceptionInInitializerError("Path model is NULL or empty.");
+        }
+        this.pathModelLD = pathModel;
+        // Load model
+        InputStream isModel = getResourceAsStream(pathModelLD);
+        LanguageDetectorModel ldModel = new LanguageDetectorModel(isModel);
+        ldME = new LanguageDetectorME(ldModel);
+    }
+
+    public String getPathModelLD() {
+        return pathModelLD;
+    }
+
+    public LanguageDetectorME getLdME() {
+        return ldME;
+    }
+    
+    public InputStream getResourceAsStream(String name) {
+        InputStream in = null;
+        ClassLoader loader = getClass().getClassLoader();
+        if (loader != null) {
+            in = loader.getResourceAsStream(name);
+        } else {
+            in = ClassLoader.getSystemResourceAsStream(name);
+        }
+        return in;
+    }
+    
+    public void langDetect(Message<JsonObject> message) {
+        try {
+            JsonObject params = message.body();
+            String s = params.getString("s", "");
+            // Get the most probable language
+            Language bestLanguage = ldME.predictLanguage(s);
+            System.out.println("bestLanguage: " + bestLanguage.toString());
+            
+            // 1. Render data
+            JsonObject lc = new JsonObject();
+            lc.put("langCode", bestLanguage.getLang());
+            JsonObject resp = new JsonObject();
+            resp.put("data", lc);
+            message.reply(resp);
+        } catch (Exception e) {
+            log.error("langDetect: " + e.getMessage(), e);
+        }
+    }
     
 }
