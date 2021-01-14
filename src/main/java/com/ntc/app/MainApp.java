@@ -33,19 +33,19 @@ public class MainApp {
     public static void main(String[] args) {
         try {
             // 1. Test
-            LangDetect ld = new LangDetect();
-            //String s = "anh yêu em"; // Vietnamese | bestLanguage: vie (0.013795926928726346)
-            //String s = "i love you"; // English | bestLanguage: eng (0.012871108192121533)
-            //String s = "わたしは、あなたを愛しています"; // Janpanese | bestLanguage: jpn (0.013529188314355168)
-            //String s = "사랑해"; // Korean | bestLanguage: kor (0.010695602361328911)
-            //String s = "ich liebe dich"; // Geaman | bestLanguage: deu (0.014547305267375082)
-            //String s = "Jeg elsker deg"; // NaUy | bestLanguage: nob (0.016747988621281257)
-            String s = "Я тебя люблю"; // Nga | bestLanguage: che (0.016200802253547433)
-            Language bestLanguage = ld.getLdME().predictLanguage(s);
-            System.out.println("bestLanguage: " + bestLanguage.toString());
+//            LangDetect ld = new LangDetect();
+//            //String s = "anh yêu em"; // Vietnamese | bestLanguage: vie (0.013795926928726346)
+//            //String s = "i love you"; // English | bestLanguage: eng (0.012871108192121533)
+//            //String s = "わたしは、あなたを愛しています"; // Janpanese | bestLanguage: jpn (0.013529188314355168)
+//            //String s = "사랑해"; // Korean | bestLanguage: kor (0.010695602361328911)
+//            //String s = "ich liebe dich"; // Geaman | bestLanguage: deu (0.014547305267375082)
+//            //String s = "Jeg elsker deg"; // NaUy | bestLanguage: nob (0.016747988621281257)
+//            String s = "Я тебя люблю"; // Nga | bestLanguage: che (0.016200802253547433)
+//            Language bestLanguage = ld.getLdME().predictLanguage(s);
+//            System.out.println("bestLanguage: " + bestLanguage.toString());
             
             // 2. Start VertX Http Server
-            //Launcher.executeCommand("run", "com.ntc.jvertx.MainVerticle");
+            Launcher.executeCommand("run", "com.ntc.jvertx.MainVerticle");
         } catch (Exception e) {
             e.printStackTrace();
         }
