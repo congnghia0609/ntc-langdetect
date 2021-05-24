@@ -16,13 +16,12 @@
 
 package com.ntc.langdetect;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import opennlp.tools.langdetect.Language;
 import opennlp.tools.langdetect.LanguageDetectorME;
 import opennlp.tools.langdetect.LanguageDetectorModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -30,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * @since Jan 15, 2021
  */
 public class LangDetect {
-    private static final Logger log = LoggerFactory.getLogger(LangDetect.class);
+    //private static final Logger log = LoggerFactory.getLogger(LangDetect.class);
     private String pathModelLD = "models/ld/langdetect-183.bin";
     private LanguageDetectorME ldME;
 
@@ -47,8 +46,14 @@ public class LangDetect {
         }
         this.pathModelLD = pathModel;
         // Load model
-        InputStream isModel = getResourceAsStream(pathModelLD);
+        InputStream isModel = new FileInputStream(pathModelLD);
         LanguageDetectorModel ldModel = new LanguageDetectorModel(isModel);
+        ldME = new LanguageDetectorME(ldModel);
+    }
+    
+    public LangDetect(InputStream in) throws IOException {
+        // Load model
+        LanguageDetectorModel ldModel = new LanguageDetectorModel(in);
         ldME = new LanguageDetectorME(ldModel);
     }
 

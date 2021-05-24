@@ -10,6 +10,17 @@ ntc-langdetect is a library Language Detector using Apache OpenNLP
 </dependency>
 ```
 
+## Build local
+```bash
+# Build
+mvn package
+or
+mvn -Dmaven.test.skip=true package
+
+# Clean
+mvn clean install
+```
+
 ## Quick start
 ```java
 LangDetect ld = new LangDetect();
