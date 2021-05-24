@@ -1,97 +1,27 @@
 # ntc-langdetect
-ntc-langdetect is a module Language Detector using Apache OpenNLP  
+ntc-langdetect is a library Language Detector using Apache OpenNLP  
 
-## Quick start
-```bash
-# Build
-mvn package
-or
-mvn -Dmaven.test.skip=true package
-
-# Start
-./runservice start development
-
-# Clean
-mvn clean install
+## Maven
+```Xml
+<dependency>
+    <groupId>com.streetcodevn</groupId>
+    <artifactId>ntc-langdetect</artifactId>
+    <version>1.0.0</version>
+</dependency>
 ```
 
-## Call API Language Detector
-```bash
-# Request
-curl -X POST -i 'http://localhost:8787/ld/v1/post' \
-  -H "Content-Type: application/json" \
-  --data '{
-    "s": "anh yêu em"
-  }'
+## Quick start
+```java
+LangDetect ld = new LangDetect();
+String s = "anh yêu em";
+// Get the most probable language
+Language bestLanguage = ld.langDetect(s);
+System.out.println("bestLanguage: " + bestLanguage.toString());
 
-# Response ISO-639-3 language code
-{"err":0,"msg":"Language detector successful","data":{"langCode":"vie"}}
+// or
 
-
-# Request
-curl -X POST -i 'http://localhost:8787/ld/v1/post' \
-  -H "Content-Type: application/json" \
-  --data '{
-    "s": "i love you"
-  }'
-
-# Response
-{"err":0,"msg":"Language detector successful","data":{"langCode":"eng"}}
-
-
-# Request
-curl -X POST -i 'http://localhost:8787/ld/v1/post' \
-  -H "Content-Type: application/json" \
-  --data '{
-    "s": "わたしは、あなたを愛しています"
-  }'
-
-# Response
-{"err":0,"msg":"Language detector successful","data":{"langCode":"jpn"}}
-
-
-# Request
-curl -X POST -i 'http://localhost:8787/ld/v1/post' \
-  -H "Content-Type: application/json" \
-  --data '{
-    "s": "사랑해"
-  }'
-
-# Response
-{"err":0,"msg":"Language detector successful","data":{"langCode":"kor"}}
-
-
-# Request
-curl -X POST -i 'http://localhost:8787/ld/v1/post' \
-  -H "Content-Type: application/json" \
-  --data '{
-    "s": "ich liebe dich"
-  }'
-
-# Response
-{"err":0,"msg":"Language detector successful","data":{"langCode":"deu"}}
-
-
-# Request
-curl -X POST -i 'http://localhost:8787/ld/v1/post' \
-  -H "Content-Type: application/json" \
-  --data '{
-    "s": "Jeg elsker deg"
-  }'
-
-# Response
-{"err":0,"msg":"Language detector successful","data":{"langCode":"nob"}}
-
-
-# Request
-curl -X POST -i 'http://localhost:8787/ld/v1/post' \
-  -H "Content-Type: application/json" \
-  --data '{
-    "s": "Я тебя люблю"
-  }'
-
-# Response
-{"err":0,"msg":"Language detector successful","data":{"langCode":"che"}}
+Language bestLanguage = ld.getLdME().predictLanguage(s);
+System.out.println("bestLanguage: " + bestLanguage.toString());
 ```
 
 

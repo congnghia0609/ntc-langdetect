@@ -16,9 +16,6 @@
 
 package com.ntc.langdetect;
 
-import io.vertx.core.eventbus.Message;
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
 import java.io.IOException;
 import java.io.InputStream;
 import opennlp.tools.langdetect.Language;
@@ -74,23 +71,7 @@ public class LangDetect {
         return in;
     }
     
-    public void langDetect(Message<JsonObject> message) {
-        try {
-            JsonObject params = message.body();
-            String s = params.getString("s", "");
-            // Get the most probable language
-            Language bestLanguage = ldME.predictLanguage(s);
-            System.out.println("bestLanguage: " + bestLanguage.toString());
-            
-            // 1. Render data
-            JsonObject lc = new JsonObject();
-            lc.put("langCode", bestLanguage.getLang());
-            JsonObject resp = new JsonObject();
-            resp.put("data", lc);
-            message.reply(resp);
-        } catch (Exception e) {
-            log.error("langDetect: " + e.getMessage(), e);
-        }
+    public Language langDetect(String s) {
+        return ldME.predictLanguage(s);
     }
-    
 }
